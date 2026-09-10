@@ -1,0 +1,246 @@
+@import "tailwindcss";
+
+/**
+ * Brand palette. Editing these values re-themes the entire storefront — every
+ * component references them through Tailwind utilities (bg-brand, text-accent,
+ * border-info/30, …) or through var(--color-*) for inline styles.
+ *
+ * Tailwind v4 reads this block at build time to generate the utility classes
+ * AND emits each entry as a CSS custom property on :root.
+ */
+@theme {
+  /* Primary brand colour — buttons, links, active states. */
+  --color-brand: #6a6ba6;
+  --color-brand-hover: #8384c8;
+
+  /* Secondary accents used to differentiate sections and badges. */
+  --color-accent: #e5b5c1;
+  --color-info: #83afc4;
+
+  /* Surfaces, darkest to lightest. */
+  --color-surface: #0b0b16;
+  --color-surface-raised: #0d0d1a;
+  --color-surface-panel: #111125;
+  --color-surface-elevated: #1a1a35;
+
+  /*
+   * Foreground ink. Every piece of text and every hairline border derives from
+   * this at some opacity (text-fg/45, border-fg/8, …), which is what makes the
+   * light theme below a palette swap rather than a rewrite.
+   *
+   * Text that sits on a brand-coloured fill stays literal `text-white` — it
+   * must not flip with the theme.
+   */
+  --color-fg: #ffffff;
+}
+
+/*
+ * Light theme. Only the tokens change; no component knows which theme is active.
+ * Brand colours are darkened here because the originals were picked for contrast
+ * against near-black and fall below 4.5:1 on a light surface.
+ *
+ * Three states, in this order:
+ *   1. no data-theme  -> follow the operating system
+ *   2. data-theme="light" / "dark" -> the shopper's explicit choice wins
+ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+  --color-surface: #f5f5fa;
+  --color-surface-raised: #ffffff;
+  --color-surface-panel: #ffffff;
+  --color-surface-elevated: #ebebf5;
+  --color-fg: #14141f;
+  --color-brand: #55568f;
+  --color-brand-hover: #454673;
+  --color-accent: #8a3f55;
+  --color-info: #2f5c73;
+  }
+}
+
+:root[data-theme="light"] {
+  --color-surface: #f5f5fa;
+  --color-surface-raised: #ffffff;
+  --color-surface-panel: #ffffff;
+  --color-surface-elevated: #ebebf5;
+  --color-fg: #14141f;
+  --color-brand: #55568f;
+  --color-brand-hover: #454673;
+  --color-accent: #8a3f55;
+  --color-info: #2f5c73;
+}
+
+:root {
+  --background: var(--color-surface);
+  --foreground: var(--color-fg);
+}
+
+
+/*
+ * Muted-text ramp.
+ *
+ * The opacity tiers (text-fg/30, text-fg/45, …) read as a deliberate hierarchy
+ * but sat below the 4.5:1 contrast floor for small text — in BOTH themes. These
+ * rules lift the bottom of the ramp while keeping every step distinct, so the
+ * hierarchy survives and the faintest chrome (footer links, the copyright line)
+ * is actually readable.
+ *
+ * The two themes need different floors: white ink losing alpha on a near-black
+ * surface degrades gently, dark ink on near-white washes out much faster. Dark
+ * clears AA around 48%, light needs roughly 60%.
+ *
+ * Only text is remapped. Borders and background tints (border-fg/8, bg-fg/2)
+ * are structural hairlines, not content, and are deliberately left alone.
+ *
+ * These rules are unlayered, so they win over Tailwind's @layer utilities
+ * without !important. Re-tagging the 282 call sites instead would have meant
+ * hand-tuning every one; this keeps the ramp in a single place you can retune.
+ */
+
+/* Base — dark. */
+.text-fg\/5 { color: color-mix(in oklab, var(--color-fg) 40%, transparent); }
+.text-fg\/10 { color: color-mix(in oklab, var(--color-fg) 44%, transparent); }
+.text-fg\/15 { color: color-mix(in oklab, var(--color-fg) 47%, transparent); }
+.text-fg\/20 { color: color-mix(in oklab, var(--color-fg) 50%, transparent); }
+.text-fg\/25 { color: color-mix(in oklab, var(--color-fg) 53%, transparent); }
+.text-fg\/30 { color: color-mix(in oklab, var(--color-fg) 56%, transparent); }
+.text-fg\/35 { color: color-mix(in oklab, var(--color-fg) 59%, transparent); }
+.text-fg\/40 { color: color-mix(in oklab, var(--color-fg) 62%, transparent); }
+.text-fg\/45 { color: color-mix(in oklab, var(--color-fg) 65%, transparent); }
+.text-fg\/50 { color: color-mix(in oklab, var(--color-fg) 68%, transparent); }
+.text-fg\/55 { color: color-mix(in oklab, var(--color-fg) 71%, transparent); }
+.text-fg\/60 { color: color-mix(in oklab, var(--color-fg) 74%, transparent); }
+.text-fg\/70 { color: color-mix(in oklab, var(--color-fg) 81%, transparent); }
+.text-fg\/75 { color: color-mix(in oklab, var(--color-fg) 85%, transparent); }
+.text-fg\/80 { color: color-mix(in oklab, var(--color-fg) 89%, transparent); }
+.text-fg\/85 { color: color-mix(in oklab, var(--color-fg) 92%, transparent); }
+.text-fg\/90 { color: color-mix(in oklab, var(--color-fg) 95%, transparent); }
+
+/* Light, when following the system. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .text-fg\/5 { color: color-mix(in oklab, var(--color-fg) 48%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/10 { color: color-mix(in oklab, var(--color-fg) 52%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/15 { color: color-mix(in oklab, var(--color-fg) 56%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/20 { color: color-mix(in oklab, var(--color-fg) 60%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/25 { color: color-mix(in oklab, var(--color-fg) 63%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/30 { color: color-mix(in oklab, var(--color-fg) 66%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/35 { color: color-mix(in oklab, var(--color-fg) 69%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/40 { color: color-mix(in oklab, var(--color-fg) 72%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/45 { color: color-mix(in oklab, var(--color-fg) 75%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/50 { color: color-mix(in oklab, var(--color-fg) 78%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/55 { color: color-mix(in oklab, var(--color-fg) 80%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/60 { color: color-mix(in oklab, var(--color-fg) 83%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/70 { color: color-mix(in oklab, var(--color-fg) 88%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/75 { color: color-mix(in oklab, var(--color-fg) 90%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/80 { color: color-mix(in oklab, var(--color-fg) 92%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/85 { color: color-mix(in oklab, var(--color-fg) 94%, transparent); }
+  :root:not([data-theme="dark"]) .text-fg\/90 { color: color-mix(in oklab, var(--color-fg) 96%, transparent); }
+}
+
+/* Light, chosen explicitly. */
+:root[data-theme="light"] .text-fg\/5 { color: color-mix(in oklab, var(--color-fg) 48%, transparent); }
+:root[data-theme="light"] .text-fg\/10 { color: color-mix(in oklab, var(--color-fg) 52%, transparent); }
+:root[data-theme="light"] .text-fg\/15 { color: color-mix(in oklab, var(--color-fg) 56%, transparent); }
+:root[data-theme="light"] .text-fg\/20 { color: color-mix(in oklab, var(--color-fg) 60%, transparent); }
+:root[data-theme="light"] .text-fg\/25 { color: color-mix(in oklab, var(--color-fg) 63%, transparent); }
+:root[data-theme="light"] .text-fg\/30 { color: color-mix(in oklab, var(--color-fg) 66%, transparent); }
+:root[data-theme="light"] .text-fg\/35 { color: color-mix(in oklab, var(--color-fg) 69%, transparent); }
+:root[data-theme="light"] .text-fg\/40 { color: color-mix(in oklab, var(--color-fg) 72%, transparent); }
+:root[data-theme="light"] .text-fg\/45 { color: color-mix(in oklab, var(--color-fg) 75%, transparent); }
+:root[data-theme="light"] .text-fg\/50 { color: color-mix(in oklab, var(--color-fg) 78%, transparent); }
+:root[data-theme="light"] .text-fg\/55 { color: color-mix(in oklab, var(--color-fg) 80%, transparent); }
+:root[data-theme="light"] .text-fg\/60 { color: color-mix(in oklab, var(--color-fg) 83%, transparent); }
+:root[data-theme="light"] .text-fg\/70 { color: color-mix(in oklab, var(--color-fg) 88%, transparent); }
+:root[data-theme="light"] .text-fg\/75 { color: color-mix(in oklab, var(--color-fg) 90%, transparent); }
+:root[data-theme="light"] .text-fg\/80 { color: color-mix(in oklab, var(--color-fg) 92%, transparent); }
+:root[data-theme="light"] .text-fg\/85 { color: color-mix(in oklab, var(--color-fg) 94%, transparent); }
+:root[data-theme="light"] .text-fg\/90 { color: color-mix(in oklab, var(--color-fg) 96%, transparent); }
+
+
+/*
+ * Brand text colours.
+ *
+ * --color-brand and friends are tuned as fills: white sits on them in buttons.
+ * Used as text on the same surface they fall just under 4.5:1, and further when
+ * on a tint of themselves (text-brand on bg-brand/10 measured 3.88:1).
+ *
+ * These *-text tokens are used only by the text utilities below, so bg-brand,
+ * border-brand and the gradients keep the original values.
+ */
+:root {
+  --color-brand-text: #9b9cd8;
+  --color-info-text: #9dc6d8;
+  --color-accent-text: #e5b5c1;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --color-brand-text: #4a4b7d;
+    --color-info-text: #2a5468;
+    --color-accent-text: #7d384c;
+  }
+}
+
+:root[data-theme="light"] {
+  --color-brand-text: #4a4b7d;
+  --color-info-text: #2a5468;
+  --color-accent-text: #7d384c;
+}
+
+.text-brand { color: var(--color-brand-text); }
+.text-brand\/50 { color: color-mix(in oklab, var(--color-brand-text) 50%, transparent); }
+.text-brand\/60 { color: color-mix(in oklab, var(--color-brand-text) 60%, transparent); }
+.text-brand\/70 { color: color-mix(in oklab, var(--color-brand-text) 70%, transparent); }
+.text-info { color: var(--color-info-text); }
+.text-info\/60 { color: color-mix(in oklab, var(--color-info-text) 60%, transparent); }
+.text-info\/70 { color: color-mix(in oklab, var(--color-info-text) 70%, transparent); }
+.text-accent { color: var(--color-accent-text); }
+.text-accent\/60 { color: color-mix(in oklab, var(--color-accent-text) 60%, transparent); }
+.text-accent\/70 { color: color-mix(in oklab, var(--color-accent-text) 70%, transparent); }
+
+html {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-theme="dark"]) { color-scheme: light; }
+}
+
+html[data-theme="light"] { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading, var(--font-sans, ui-sans-serif, system-ui, sans-serif));
+}
+
+@keyframes toast-enter {
+  from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-leave {
+  from { opacity: 1; transform: translateY(0) scale(1); max-height: 80px; margin-bottom: 0; }
+  to   { opacity: 0; transform: translateY(-6px) scale(0.96); max-height: 0; margin-bottom: -8px; }
+}
+.toast-enter { animation: toast-enter 0.22s ease-out forwards; }
+.toast-leave { animation: toast-leave 0.25s ease-in forwards; }
+
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(250%) skewX(-15deg); }
+}
+.shimmer-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: translateX(-100%) skewX(-15deg);
+  animation: shimmer-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}

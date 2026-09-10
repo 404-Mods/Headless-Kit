@@ -1,0 +1,86 @@
+#:schema node_modules/wrangler/config-schema.json
+#
+# Cloudflare Workers deployment config.
+#
+# Before your first deploy:
+#   1. Set `account_id` below, or run `wrangler login` and let Wrangler pick it up.
+#   2. Set NEXT_PUBLIC_STORE_URL to your real public URL.
+#   3. Store your Tebex token as a secret:  wrangler secret put TEBEX_TOKEN
+#   4. Uncomment the [[routes]] block if you are serving from a custom domain.
+
+name = "headless-kit"
+main = ".open-next/worker.js"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Your Cloudflare account ID — find it in the dashboard sidebar, or run
+# `wrangler whoami`. Leave commented to use the account you are logged in as.
+# account_id = ""
+
+[assets]
+directory = ".open-next/assets"
+
+[vars]
+# Public base URL. Used for canonical links, sitemap entries, and the
+# complete/cancel URLs handed to Tebex at checkout.
+#
+# IMPORTANT: Next inlines every NEXT_PUBLIC_* value at BUILD time, so setting
+# this here alone is NOT enough — your sitemap and canonical URLs would ship
+# pointing at localhost. Set it in the environment that runs `cf:build` too
+# (.env.local locally, or your CI build env).
+NEXT_PUBLIC_STORE_URL = "http://localhost:3000"
+
+# Serve from your own domain. The zone must already exist in your Cloudflare account.
+# [[routes]]
+# pattern = "store.example.com"
+# zone_name = "example.com"
+# custom_domain = true
+
+# ── Public demo ──────────────────────────────────────────────────────────────
+# Deploys a separate worker serving the built-in fixture catalogue, so the demo
+# never touches a real Tebex store. Deploy it with `npm run demo:deploy`.
+#
+# NEXT_PUBLIC_* values are inlined at BUILD time, so the demo build must set
+# NEXT_PUBLIC_DEMO_MODE itself — listing it under [env.demo.vars] alone is not
+# enough. The npm script handles that.
+[env.demo]
+name = "headless-kit-demo"
+
+[env.demo.vars]
+NEXT_PUBLIC_DEMO_MODE = "true"
+NEXT_PUBLIC_STORE_URL = "https://headless-kit-demo.404dev.workers.dev"
+
+[env.demo.assets]
+directory = ".open-next/assets"
+
+# ── Optional: product reviews ────────────────────────────────────────────────
+# Reviews are off until a D1 database is bound here. To enable them:
+#
+#   npx wrangler d1 create storefront-reviews
+#   # paste the printed database_id below, then uncomment this block
+#   npx wrangler d1 migrations apply storefront-reviews --local
+#   npx wrangler d1 migrations apply storefront-reviews --remote
+#
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "storefront-reviews"
+# database_id = ""
+# migrations_dir = "migrations"
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1
+
+# TEBEX_TOKEN is a secret and must never be committed. Set it with:
+#   wrangler secret put TEBEX_TOKEN

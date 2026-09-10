@@ -1,0 +1,60 @@
+{
+  "name": "headless-kit",
+  "version": "0.1.0",
+  "type": "module",
+  "private": false,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "npm run cf:build && wrangler dev",
+    "cf:deploy": "npm run cf:build && wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "demo:deploy": "cross-env NEXT_PUBLIC_DEMO_MODE=true NEXT_PUBLIC_STORE_URL=https://headless-kit-demo.404dev.workers.dev npm run cf:build && wrangler deploy --env demo",
+    "demo:dev": "cross-env NEXT_PUBLIC_DEMO_MODE=true next dev"
+  },
+  "dependencies": {
+    "@hugeicons/core-free-icons": "^4.0.0",
+    "@hugeicons/react": "^1.1.6",
+    "clsx": "^2.1.1",
+    "marked": "^18.0.2",
+    "motion": "^12.36.0",
+    "next": "^16.3.4",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260910.1",
+    "@opennextjs/cloudflare": "^1.19.4",
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^3.2.7",
+    "cross-env": "^10.1.0",
+    "eslint": "^9",
+    "eslint-config-next": "^16.3.4",
+    "jsdom": "^29.1.1",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^3.2.7",
+    "wrangler": "^4.86.0"
+  },
+  "description": "A config-driven Next.js storefront for the Tebex Headless API, deployable to Cloudflare Workers.",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "404 Development",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/notcamslice/store.git"
+  },
+  "bugs": {
+    "url": "https://github.com/notcamslice/store/issues"
+  }
+}

@@ -1,0 +1,54 @@
+Headless Kit Licence
+
+Copyright (c) 2026 404 Development
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+1. ATTRIBUTION IN SOURCE
+
+   The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+
+2. ATTRIBUTION IN DEPLOYMENT
+
+   Any publicly accessible deployment of the Software, or of a derivative work
+   based on it, must retain a visible credit to 404 Development in the user
+   interface. The credit shipped in the footer of this project satisfies this
+   condition as supplied.
+
+   The credit must remain legible to an ordinary visitor. Deleting it, hiding
+   it with styling, moving it behind an interaction, or reducing it below the
+   legibility of surrounding footer text does not satisfy this condition.
+
+   Rebranding every other part of the Software is expressly permitted and
+   encouraged. This condition covers the 404 Development credit only, and does
+   not restrict your own branding, naming, or presentation in any way.
+
+3. WAIVER
+
+   Condition 2 may be waived under a separate commercial licence granted by
+   404 Development. To enquire, get in touch via:
+
+       https://404development.com
+
+   No other condition of this licence may be waived except in writing by
+   404 Development.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+───────────────────────────────────────────────────────────────────────────────
+
+This licence is the MIT Licence with an added deployment-attribution condition.
+Because of condition 2 it is source-available rather than OSI-approved open
+source, and it is not MIT-compatible. Do not describe it as MIT.
