@@ -255,7 +255,7 @@ export default function FAQPage() {
             </p>
             <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <a
-                href="https://discord.gg/QP99vy3xZS"
+                href="https://discord.gg/7g7BEGDSRW"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-2 rounded-full bg-linear-to-r from-brand to-info px-8 py-3 text-sm font-bold text-white shadow-lg shadow-brand/25 transition-all duration-300 hover:scale-[1.03]"
