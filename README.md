@@ -164,6 +164,29 @@ Edit `wrangler.toml` first:
 > [!WARNING]
 > Next inlines `NEXT_PUBLIC_*` values at **build** time. Setting `NEXT_PUBLIC_STORE_URL` in `wrangler.toml` alone is not enough — it must also be present when `cf:build` runs, or your sitemap, `robots.txt` and canonical URLs will ship pointing at `localhost:3000`. Put it in `.env.local`, or in your CI build environment.
 
+### Deploying from a connected Git repo
+
+Workers Builds does **not** build the worker for you. `wrangler deploy` detects the
+OpenNext project and hands off to `opennextjs-cloudflare deploy`, which only *uploads*
+`.open-next/` — it never builds it. If the build command didn't produce that directory,
+the deploy dies immediately with:
+
+```
+ERROR Could not find compiled Open Next config, did you run the build command?
+```
+
+`npm run build` alone is not enough: it produces `.next/`, not `.open-next/`. In your
+Worker's **Settings → Build**, set:
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run cf:build` |
+| Deploy command | `npx wrangler deploy` |
+
+Add `NEXT_PUBLIC_STORE_URL` under **Build variables** too. `[vars]` in `wrangler.toml`
+are runtime values — the Next build never sees them, and the warning above applies just
+as much here. `TEBEX_TOKEN` stays a runtime secret; it isn't needed at build time.
+
 See **[cloudflare-rules.md](./cloudflare-rules.md)** for suggested WAF, rate-limiting and cache rules.
 
 ### Enabling reviews (optional)
